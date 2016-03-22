@@ -6,6 +6,8 @@ tmp/
 *.swp
 *~.nib
 local.properties
+build.properties
+build.xml
 .settings/
 .loadpath
 .recommenders
@@ -50,3 +52,4 @@ local.properties
 .recommenders/
 
 build
+
