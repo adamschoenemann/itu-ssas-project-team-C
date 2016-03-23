@@ -5,6 +5,7 @@ tmp/
 *.bak
 *.swp
 *~.nib
+dist/
 local.properties
 build.properties
 build.xml
