@@ -8,7 +8,6 @@ tmp/
 dist/
 local.properties
 build.properties
-build.xml
 .settings/
 .loadpath
 .recommenders
