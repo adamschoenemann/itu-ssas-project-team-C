@@ -5,7 +5,9 @@ tmp/
 *.bak
 *.swp
 *~.nib
+dist/
 local.properties
+build.properties
 .settings/
 .loadpath
 .recommenders
@@ -50,3 +52,4 @@ local.properties
 .recommenders/
 
 build
+
