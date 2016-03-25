@@ -18,6 +18,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
 import org.apache.tomcat.util.http.fileupload.FileItem;
+import org.apache.tomcat.util.http.fileupload.FileItemIterator;
+import org.apache.tomcat.util.http.fileupload.FileItemStream;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
 import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
@@ -54,9 +56,9 @@ public class Uploader extends HttpServlet {
 			ServletFileUpload upload = new ServletFileUpload(factory);
 
 			// Parse the request
-			List<FileItem> items = upload.parseRequest(request);
-			FileItem file = items.iterator().next();
-			InputStream iis = file.getInputStream();
+			FileItemIterator items = upload.getItemIterator(request);
+			FileItemStream fis = items.next();
+			InputStream iis = fis.openStream();
 			
 			Connection con = DB.getConnection();
 
