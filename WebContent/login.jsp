@@ -3,6 +3,9 @@
     import = "java.sql.*"
     import = "dk.itu.ssas.project.DB"
 %>
+
+<%-- TODO: input validation has to be added --%>
+
 <%
     String user = request.getParameter("username");   
     String pwd = request.getParameter("password");

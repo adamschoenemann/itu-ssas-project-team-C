@@ -23,6 +23,9 @@ ul {
 </style>
 </head>
 <body>
+
+<%-- TODO: username could be a script right now! --%>
+
 <p>Hello, <%= username %>!
 <p><form method="post" enctype="multipart/form-data" action="Uploader">
 	Add a picture: 
@@ -83,6 +86,9 @@ ul {
 <%
         }
  %>
+
+<%-- TODO: a comment also could be a script right now! --%>
+ 
  <br>
    <form action="Comment" method="post">
         	<input type='text' name='comment'>
