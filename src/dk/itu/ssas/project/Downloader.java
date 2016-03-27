@@ -34,11 +34,14 @@ public class Downloader extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
+ 		// TODO: Check session state
 		try 
 		{
 			Connection con = DB.getConnection();
 			String image_id = request.getParameter("image_id");
+ 			// TODO: Use prepared statement
 			Statement st = con.createStatement();
+ 			// TODO: Include permission check
 			ResultSet image = st.executeQuery("SELECT jpeg FROM images WHERE id = " + image_id);
 			image.next();
 			byte[] content = image.getBytes("jpeg");

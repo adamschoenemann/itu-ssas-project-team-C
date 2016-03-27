@@ -7,6 +7,8 @@
 <%-- TODO: same here, input validation has to be added --%>
 <%-- TODO: introduce a password policy --%>
 <%-- TODO: don't save the password without salt and in plain text --%>
+<%-- TODO: session state validation --%>
+<%-- TODO: set CSRF token in session --%>
 
 <% 
 	String user = request.getParameter("username");   
@@ -18,6 +20,7 @@
     		+ user + "'");
     if (rs.next()) {
     	// Have a result; username already taken.  	
+        // TODO: use session state rather than request parameters for failure info
     	response.sendRedirect("index.jsp?create_failure=1");       
     } else {
     	// No result; user failed to authenticate; try again.

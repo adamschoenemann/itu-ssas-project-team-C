@@ -5,12 +5,15 @@
 %>
 
 <%-- TODO: input validation has to be added --%>
+<%-- TODO: session state validation --%>
+<%-- TODO: set CSRF token in session --%>
 
 <%
     String user = request.getParameter("username");   
     String pwd = request.getParameter("password");
    
     Connection con = DB.getConnection();
+    // TODO: use parameterized statement
     Statement st = con.createStatement();
     ResultSet rs = st.executeQuery("SELECT id FROM users WHERE username='"
     		+ user + "' AND " + "password='" + pwd + "'");
@@ -21,6 +24,7 @@
     	response.sendRedirect("main.jsp");
     } else {
     	// No result; user failed to authenticate; try again.
+        // TODO: use session state rather than request parameters for failure info
     	response.sendRedirect("index.jsp?login_failure=1");
     }
 %>

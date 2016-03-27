@@ -33,11 +33,15 @@ public class Comment extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		 try
 		 {
+			 // TODO: check session state
+			 // TODO: check CSRF token
 			 Connection con = DB.getConnection();
-		 
+
+			 // TODO: use prepared statement
 			 Statement st = con.createStatement();
 			 st.executeUpdate("INSERT INTO comments (image_id, user_id, comment) VALUES (" +
 				 request.getParameter("image_id") + ", " + 
+				 // TODO: get user_id from session
 				 request.getParameter("user_id") + ", '" +
 				 request.getParameter("comment") + "')");
 			 response.sendRedirect("main.jsp");

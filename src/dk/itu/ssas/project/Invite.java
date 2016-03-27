@@ -32,9 +32,13 @@ public class Invite extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
 	{
+		 // TODO: check session state
+		 // TODO: check CSRF token
 		try
 		{
+			 // TODO: use prepared statement
 			Connection con = DB.getConnection();
+			 // TODO: check permission
 			String sql = 
 				"INSERT INTO perms (image_id, user_id) " + 
 				"SELECT " + request.getParameter("image_id") + ", users.id " +

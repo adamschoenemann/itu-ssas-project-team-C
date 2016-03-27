@@ -3,6 +3,8 @@
     import = "java.sql.*"
     import = "dk.itu.ssas.project.DB" 
 %>
+<%-- TODO: check session state --%>
+<%-- TODO: add CSRF token to all forms --%>
 <%
 	String user = session.getAttribute("user").toString();
 	String username = session.getAttribute("username").toString();
@@ -25,6 +27,7 @@ ul {
 <body>
 
 <%-- TODO: username could be a script right now! --%>
+<%-- TODO: html-escape all output to prevent XSS --%>
 
 <p>Hello, <%= username %>!
 <p><form method="post" enctype="multipart/form-data" action="Uploader">
@@ -49,6 +52,7 @@ ul {
     	  );
     	  other.next();
     	  String other_name = other.getString(1);
+          // TODO: html-escape all output to prevent XSS
   %>
 	<li> Posted by <%= other_name%>:<br><br>
 	   <img src="Downloader?image_id=<%= image_id %>" width="60%"><br>
@@ -65,6 +69,7 @@ ul {
 			if (sharee.equals (username)) {
 				continue;
 			}
+                // TODO: html-escape all output to prevent XSS
 %>
 		<%= sharee %>
 <% 
@@ -81,6 +86,7 @@ ul {
             "AND comments.image_id = " + image_id
         );	
         while (comments.next()) {
+                // TODO: html-escape all output to prevent XSS
 %>
 		From <%= comments.getString(2) %>: "<%= comments.getString(1) %>"<br>
 <%
@@ -93,10 +99,12 @@ ul {
    <form action="Comment" method="post">
         	<input type='text' name='comment'>
             <input type="submit" value="Post comment!">
+            <%-- TODO: user_id should not be part of form (it's session info) --%>
             <input type="hidden" name="user_id" value='<%= user %>'>
             <input type="hidden" name="image_id" value='<%= image_id %>'>
    		 </form>	
    		<br>
+                <%-- TODO: only output Invite form if users own image --%>
    		<form action="Invite" method="post">
    			<input type='text' name='other'>
             <input type="submit" value="Share image!">
