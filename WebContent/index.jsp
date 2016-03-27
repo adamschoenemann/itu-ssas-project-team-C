@@ -15,6 +15,7 @@
 	<% } %>
 	<form method="get" action="login.jsp">
 		Username: <input type="text" name="username"><br> 
+                <%-- TODO: use password type field --%>
 		Password: <input type="text" name="password"><br>		
 		<input type="reset" value="Reset">
 		<input type="submit" value="Login">		
