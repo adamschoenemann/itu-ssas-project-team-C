@@ -41,3 +41,46 @@ manager.password=password # your manager's password
 15. Enjoy not using Eclipse and the VM provided!
 
 [1]: http://central.maven.org/maven2/mysql/mysql-connector-java/5.1.28/mysql-connector-java-5.1.28.jar
+
+
+## Running the deployment machine
+
+The deploymemt mackine needs at least two (virtual) network cards, the second
+must be on the InfSec internal network. This is set up with static ip
+address 192.168.0.101.
+
+For convenience you can set up the machine mu (Sørens template) with a second
+network card on the InfSec internal network. It needs to have a static
+ip address as well (I have set up mine as 192.168.0.100). For further
+convenience add the line below to /etc/hosts on mu:
+192.168.0.101	photoshare
+
+Now you can reach the deployment machine as "photoshare". Verify with
+ping photoshare.
+
+The project web application (in all its insecure glory) is running
+on port 443. Access with https://photoshare (you will need to accept the
+self signed certificate). The regular http port (80) should redirect
+you to https.
+
+There is one regular user on the machine. You can log on ssh from mu
+(more convenient than logging on via the machine itself as it does not
+have a graphical UI).
+Use name: photoshare
+Password: ssas16teamC
+
+For work on the db or the OS/config you will have to log onto the machine.
+To just deploy a new WAR file, see below.
+
+
+## Deploying to the deployment machine
+
+1. Build/export the WAR file to deploy.
+   Preferably put it in $HOME/dk.itu.ssas.project.war
+2. The deployment machine must be up and running and the local machine
+   must be on the "InfSec" internal network as well
+3. Run the script ./deploy.sh from this directory.
+4. You will be asked for the password for the key photoshare_rsa.
+   The password is: ssas16teamC
+5. Voilá - deployed. In case of trouble look in the deploy.sh script
+   for answers...
