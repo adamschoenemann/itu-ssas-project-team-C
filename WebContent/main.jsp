@@ -38,6 +38,7 @@ ul {
 <ul>
 <%
 	Connection con = DB.getConnection();
+	//TODO: use parameterized statement here too?
     Statement st = con.createStatement();
     Statement st2 = con.createStatement();
     ResultSet image_ids = st.executeQuery(

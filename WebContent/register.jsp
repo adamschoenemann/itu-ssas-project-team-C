@@ -15,6 +15,7 @@
     String pwd = request.getParameter("password");
    
     Connection con = DB.getConnection();
+ 	// TODO: use parameterized statement here too?
     Statement st = con.createStatement();
     ResultSet rs = st.executeQuery("SELECT * FROM users WHERE username='"
     		+ user + "'");

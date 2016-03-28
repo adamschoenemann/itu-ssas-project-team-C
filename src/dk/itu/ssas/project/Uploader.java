@@ -63,6 +63,7 @@ public class Uploader extends HttpServlet {
 			FileItemStream fis = items.next();
 			InputStream iis = fis.openStream();
 			
+			// TODO: use prepared statement here too?
 			Connection con = DB.getConnection();
 
 			String sql = "INSERT INTO images (jpeg, owner) values (?, ?)";
