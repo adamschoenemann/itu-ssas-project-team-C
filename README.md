@@ -45,7 +45,7 @@ manager.password=password # your manager's password
 
 ## Running the deployment machine
 
-The deploymemt mackine needs at least two (virtual) network cards, the second
+The deploymemt machine needs at least two (virtual) network cards, the second
 must be on the InfSec internal network. This is set up with static ip
 address 192.168.0.101.
 
