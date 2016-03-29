@@ -36,7 +36,6 @@ public class Uploader extends HttpServlet {
      */
     public Uploader() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
