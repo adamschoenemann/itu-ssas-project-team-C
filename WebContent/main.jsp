@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"
     import = "java.sql.*"
-    import = "dk.itu.ssas.project.DB" 
+    import = "dk.itu.ssas.project.DB"
 %>
 <%-- TODO: check session state --%>
 <%-- TODO: add CSRF token to all forms --%>
@@ -31,23 +31,23 @@ ul {
 
 <p>Hello, <%= username %>!
 <p><form method="post" enctype="multipart/form-data" action="Uploader">
-	Add a picture: 
+	Add a picture:
 	<input type="file" name="pic" accept="jpeg">
 	<input type="submit" value="Upload!">
 </form>
 <ul>
 <%
 	Connection con = DB.getConnection();
-	//TODO: use parameterized statement here too?
+	//TODO: use parameterized statement for consistcancy
     Statement st = con.createStatement();
     Statement st2 = con.createStatement();
     ResultSet image_ids = st.executeQuery(
     	"SELECT DISTINCT image_id FROM perms WHERE perms.user_id = " + user);
     while (image_ids.next()) {
-    	  String image_id = image_ids.getString(1);       
+    	  String image_id = image_ids.getString(1);
     	  ResultSet other = st2.executeQuery(
               "SELECT username " +
-              "FROM users INNER JOIN images " + 
+              "FROM users INNER JOIN images " +
               "WHERE users.id = images.owner " +
               "AND   images.id = " + image_id
     	  );
@@ -57,8 +57,8 @@ ul {
   %>
 	<li> Posted by <%= other_name%>:<br><br>
 	   <img src="Downloader?image_id=<%= image_id %>" width="60%"><br>
-	    Shared with: 
-<%         
+	    Shared with:
+<%
 		ResultSet viewers = st2.executeQuery(
 			"SELECT users.username " +
 		    "FROM users INNER JOIN perms " +
@@ -73,19 +73,19 @@ ul {
                 // TODO: html-escape all output to prevent XSS
 %>
 		<%= sharee %>
-<% 
-		}			
+<%
+		}
 %>
 		<br><br>
 <%
-		
-		
+
+
         ResultSet comments = st2.executeQuery(
-        	"SELECT comments.comment, users.username " + 
-            "FROM comments INNER JOIN users " + 
+        	"SELECT comments.comment, users.username " +
+            "FROM comments INNER JOIN users " +
             "WHERE users.id = comments.user_id " +
             "AND comments.image_id = " + image_id
-        );	
+        );
         while (comments.next()) {
                 // TODO: html-escape all output to prevent XSS
 %>
@@ -95,7 +95,7 @@ ul {
  %>
 
 <%-- TODO: a comment also could be a script right now! --%>
- 
+
  <br>
    <form action="Comment" method="post">
         	<input type='text' name='comment'>
@@ -103,7 +103,7 @@ ul {
             <%-- TODO: user_id should not be part of form (it's session info) --%>
             <input type="hidden" name="user_id" value='<%= user %>'>
             <input type="hidden" name="image_id" value='<%= image_id %>'>
-   		 </form>	
+   		 </form>
    		<br>
                 <%-- TODO: only output Invite form if users own image --%>
    		<form action="Invite" method="post">
@@ -112,11 +112,11 @@ ul {
             <input type="hidden" name="image_id" value="<%= image_id %>">
    		</form>
    		<br>
-	 </li>       
+	 </li>
 <%
 	}
-%>     
-</ul>   
+%>
+</ul>
 
 </body>
 </html>

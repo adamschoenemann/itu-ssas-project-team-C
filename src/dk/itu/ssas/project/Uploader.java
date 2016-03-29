@@ -30,7 +30,7 @@ import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 @WebServlet("/Uploader")
 public class Uploader extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -62,8 +62,7 @@ public class Uploader extends HttpServlet {
 			FileItemIterator items = upload.getItemIterator(request);
 			FileItemStream fis = items.next();
 			InputStream iis = fis.openStream();
-			
-			// TODO: use prepared statement here too?
+
 			Connection con = DB.getConnection();
 
 			String sql = "INSERT INTO images (jpeg, owner) values (?, ?)";
@@ -79,15 +78,15 @@ public class Uploader extends HttpServlet {
 			sql = "INSERT INTO perms (image_id, user_id) values (" +
 					image_id + ", " + request.getSession().getAttribute("user") + ")";
 
-			con.createStatement().executeUpdate(sql);       
-	
+			con.createStatement().executeUpdate(sql);
+
 			response.sendRedirect("main.jsp");
-		} 
-		catch (SQLException | FileUploadException e) 
+		}
+		catch (SQLException | FileUploadException e)
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}		
+		}
 	}
 
 }
