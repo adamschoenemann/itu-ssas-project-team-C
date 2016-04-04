@@ -26,6 +26,7 @@
     <h3>Username already taken. Try again?</h3>
     <% } %>
     <form method="get" action="register.jsp">
+        <input type="hidden" name="csrfPreventionSalt" value='<%= request.getAttribute("csrfPreventionSalt") %>'/>
         Username: <input type="text" name="username" /><br>
         Password: <input type="password" name="password" /><br>
         <input type="reset" value="Reset">
