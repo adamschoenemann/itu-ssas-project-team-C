@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/Comment")
 public class Comment extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -34,19 +34,18 @@ public class Comment extends HttpServlet {
 		 try
 		 {
 			 // TODO: check session state
-			 // TODO: check CSRF token
 			 Connection con = DB.getConnection();
 
 			 // TODO: use prepared statement
 			 Statement st = con.createStatement();
 			 st.executeUpdate("INSERT INTO comments (image_id, user_id, comment) VALUES (" +
-				 request.getParameter("image_id") + ", " + 
+				 request.getParameter("image_id") + ", " +
 				 // TODO: get user_id from session
 				 request.getParameter("user_id") + ", '" +
 				 request.getParameter("comment") + "')");
 			 response.sendRedirect("main.jsp");
 		 }
-		 catch (Exception e) 
+		 catch (Exception e)
 		 {
 			 throw new ServletException("SQL malfunction.", e);
 		 }

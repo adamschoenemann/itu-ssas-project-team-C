@@ -133,7 +133,7 @@
   <property name="docs.home"     value="${basedir}/docs"/>
   <property name="manager.url"   value="http://localhost:8080/manager/text"/>
   <property name="src.home"      value="${basedir}/src"/>
-  <property name="web.home"      value="${basedir}/web"/>
+  <property name="web.home"      value="${basedir}/WebContent"/>
 
 
 <!-- ==================== External Dependencies =========================== -->
@@ -160,6 +160,7 @@
   <property name="foo.jar"
            value="/path/to/foo.jar"/>
 -->
+  <!-- <property name="guava-16.0.1.jar" value="${basedir}/lib/guava-16.0.1.jar" /> -->
 
 
 <!-- ==================== Compilation Classpath =========================== -->
@@ -191,7 +192,9 @@
     <fileset dir="${catalina.home}/lib">
       <include name="*.jar"/>
     </fileset>
-
+    <fileset dir="${web.home}/WEB-INF/lib">
+      <include name="*.jar"/>
+    </fileset>
   </path>
 
 
@@ -509,7 +512,7 @@
 
   </target>
 
-<!-- ==================== HomeMade redeploy target ============= -->
-  <target name="redeploy" depends="remove,install"/>
+<!-- ==================== HomeMade reinstall target ============= -->
+  <target name="reinstall" depends="compile,remove,install"/>
 
 </project>

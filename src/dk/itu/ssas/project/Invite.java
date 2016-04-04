@@ -32,7 +32,6 @@ public class Invite extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		 // TODO: check session state
-		 // TODO: check CSRF token
 		try
 		{
 			 // TODO: use prepared statement

@@ -8,6 +8,7 @@
 <%
 	String user = session.getAttribute("user").toString();
 	String username = session.getAttribute("username").toString();
+    String salt = session.getAttribute("csrfPreventionSalt").toString();
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -30,7 +31,7 @@ ul {
 <%-- TODO: html-escape all output to prevent XSS --%>
 
 <p>Hello, <%= username %>!
-<p><form method="post" enctype="multipart/form-data" action="Uploader">
+<p><form method="post" enctype="multipart/form-data" action="Uploader?csrfPreventionSalt=<%= salt %>">
 	Add a picture:
 	<input type="file" name="pic" accept="jpeg">
 	<input type="submit" value="Upload!">
@@ -98,6 +99,7 @@ ul {
 
  <br>
    <form action="Comment" method="post">
+        <input type="hidden" name="csrfPreventionSalt" value='<%= salt %>'/>
         	<input type='text' name='comment'>
             <input type="submit" value="Post comment!">
             <%-- TODO: user_id should not be part of form (it's session info) --%>
@@ -107,6 +109,7 @@ ul {
    		<br>
                 <%-- TODO: only output Invite form if users own image --%>
    		<form action="Invite" method="post">
+            <input type="hidden" name="csrfPreventionSalt" value='<%= salt %>'/>
    			<input type='text' name='other'>
             <input type="submit" value="Share image!">
             <input type="hidden" name="image_id" value="<%= image_id %>">

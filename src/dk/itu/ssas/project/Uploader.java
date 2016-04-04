@@ -44,7 +44,6 @@ public class Uploader extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			 // TODO: check session state
-			 // TODO: check CSRF token
 			 // TODO: is the factory used below really secure?
 			// Create a factory for disk-based file items
 			DiskFileItemFactory factory = new DiskFileItemFactory();
