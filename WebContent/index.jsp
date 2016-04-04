@@ -13,7 +13,7 @@
     <% if (request.getParameter("login_failure") != null) { %>
     <h3>Login failure. Try again?</h3>
     <% } %>
-    <form method="get" action="login.jsp">
+    <form method="post" action="login.jsp">
         <input type="hidden" name="csrfPreventionSalt" value='<%= request.getAttribute("csrfPreventionSalt") %>'/>
         Username: <input type="text" name="username"><br>
                 <%-- TODO: use password type field --%>
@@ -25,7 +25,7 @@
     <% if (request.getParameter("create_failure") != null) { %>
     <h3>Username already taken. Try again?</h3>
     <% } %>
-    <form method="get" action="register.jsp">
+    <form method="post" action="register.jsp">
         <input type="hidden" name="csrfPreventionSalt" value='<%= request.getAttribute("csrfPreventionSalt") %>'/>
         Username: <input type="text" name="username" /><br>
         Password: <input type="password" name="password" /><br>
