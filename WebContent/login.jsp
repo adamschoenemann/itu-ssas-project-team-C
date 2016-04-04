@@ -28,9 +28,7 @@
 	} 
 	
 	// close the user scanner
-	scanUser.close();
-        		
-
+	scanUser.close();	
    
     Connection con = DB.getConnection();
     // TODO: use parameterized statement
