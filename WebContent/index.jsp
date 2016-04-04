@@ -48,6 +48,5 @@
 	<h4>- contain at least on special character from [ @ # $ % ! . ]</h4>
 	<h4>- between 8 and 40 characters long</h4>
 
->>>>>>> e3389d29cbc5b56e993997a26e28d0712fc99231
 </body>
 </html>
