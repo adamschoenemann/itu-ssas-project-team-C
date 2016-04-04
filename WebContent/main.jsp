@@ -94,8 +94,6 @@ ul {
         }
  %>
 
-<%-- TODO: a comment also could be a script right now! --%>
-
  <br>
    <form action="Comment" method="post">
         	<input type='text' name='comment'>

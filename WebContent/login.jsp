@@ -22,6 +22,8 @@
     ResultSet rs1 = st1.executeQuery("SELECT id,salt FROM users WHERE username='" + user + "'");
     
     if (rs1.next()) {
+    	
+    	// get salt of found user
     	String salt = rs1.getString(2);
     	
     	// add salt to password
@@ -59,7 +61,7 @@
         	// Have a result; user is authenticated.
         	session.setAttribute("user", rs2.getString(1));
         	session.setAttribute("username", user);
-        	//session.setAttribute("salt", salt);	// not sure if we need this
+        	//session.setAttribute("salt", salt);			// not sure if we need this
         	response.sendRedirect("main.jsp");
         } else {
         	// No result; user failed to authenticate; try again.

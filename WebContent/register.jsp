@@ -74,7 +74,7 @@
     	rs.next();
     	session.setAttribute("user", rs.getString(1));
     	session.setAttribute("username", user);
-    	//session.setAttribute("salt", salt);	// not sure if we need this
+    	//session.setAttribute("salt", salt);			// not sure if we need this
     	response.sendRedirect("main.jsp");
     }
 %>
