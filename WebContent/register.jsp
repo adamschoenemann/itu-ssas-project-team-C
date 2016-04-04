@@ -11,11 +11,27 @@
 
 <%@ page import="java.security.MessageDigest" %>
 <%@ page import="java.security.NoSuchAlgorithmException" %>
+<%@ page import="java.util.Scanner" %>
+
 
 <%
 
 	String user = request.getParameter("username");
 	String pwd = request.getParameter("password");
+	
+    // create new scanner, that checks the username input
+	Scanner scanUser = new Scanner(user);
+    boolean validInput = true;
+    
+    //System.out.println(!scanUser.hasNext("^[a-zA-Z0-9-_]+$"));
+    
+	// allow only alphanumeric usernames including dashes and underscores
+	if(!scanUser.hasNext("^[a-zA-Z0-9-_]+$")){
+        validInput = false;
+	} 
+	
+	// close the user scanner
+	scanUser.close();
 
 	// characters allowed for the salt string
 	String SALTCHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
@@ -62,7 +78,7 @@
     Statement st = con.createStatement();
     ResultSet rs = st.executeQuery("SELECT * FROM users WHERE username='"
     		+ user + "'");
-    if (rs.next()) {
+    if (rs.next() || !validInput) {
     	// Have a result; username already taken.
         // TODO: use session state rather than request parameters for failure info
     	response.sendRedirect("index.jsp?create_failure=1");

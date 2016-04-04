@@ -10,10 +10,27 @@
 
 <%@ page import="java.security.MessageDigest" %>
 <%@ page import="java.security.NoSuchAlgorithmException" %>
+<%@ page import="java.util.Scanner" %>
 
 <%
     String user = request.getParameter("username");   
     String pwd = request.getParameter("password");
+ 
+    // create new scanner, that checks the username input
+	Scanner scanUser = new Scanner(user);
+    boolean validInput = true;
+
+    //System.out.println(!scanUser.hasNext("^[a-zA-Z0-9-_]+$"));
+    
+	// allow only alphanumeric usernames including dashes and underscores
+	if(!scanUser.hasNext("^[a-zA-Z0-9-_]+$")){
+        validInput = false;
+	} 
+	
+	// close the user scanner
+	scanUser.close();
+        		
+
    
     Connection con = DB.getConnection();
     // TODO: use parameterized statement
@@ -21,7 +38,7 @@
     
     ResultSet rs1 = st1.executeQuery("SELECT id,salt FROM users WHERE username='" + user + "'");
     
-    if (rs1.next()) {
+    if (rs1.next() && validInput) {
     	
     	// get salt of found user
     	String salt = rs1.getString(2);
