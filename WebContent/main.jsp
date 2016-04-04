@@ -109,5 +109,9 @@ ul {
 %>
 </ul>
 
+<form action="Logout" method="post">
+    <input type="hidden" name="csrfPreventionSalt" value='<%= salt %>'/>
+    <input type="submit" value="Log out" />
+</form>
 </body>
 </html>
