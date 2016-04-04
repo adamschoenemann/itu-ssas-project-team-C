@@ -4,7 +4,6 @@
     import = "dk.itu.ssas.project.DB"
 %>
 
-<%-- TODO: input validation has to be added --%>
 <%-- TODO: session state validation --%>
 <%-- TODO: set CSRF token in session --%>
 
@@ -28,9 +27,7 @@
 	} 
 	
 	// close the user scanner
-	scanUser.close();
-        		
-
+	scanUser.close();	
    
     Connection con = DB.getConnection();
     // TODO: use parameterized statement

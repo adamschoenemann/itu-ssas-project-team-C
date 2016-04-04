@@ -12,7 +12,8 @@
 <%@ page import="java.security.MessageDigest" %>
 <%@ page import="java.security.NoSuchAlgorithmException" %>
 <%@ page import="java.util.Scanner" %>
-
+<%@ page import="java.util.regex.Matcher" %>
+<%@ page import="java.util.regex.Pattern" %>
 
 <%
 
@@ -32,6 +33,24 @@
 	
 	// close the user scanner
 	scanUser.close();
+	
+	Pattern pattern;
+	Matcher matcher;
+	
+	// password policy
+	// ---------------
+	// contain at least one digit
+	// contain at least one lower case character
+	// contain at least one upper case character
+	// contain at least on special character from [ @ # $ % ! . ]
+	// between 8 and 40 characters long
+			
+	String PASSWORD_PATTERN = "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%!]).{8,40})";
+	
+	pattern = Pattern.compile(PASSWORD_PATTERN);
+	matcher = pattern.matcher(pwd);
+	
+	boolean validPassword = matcher.matches();
 
 	// characters allowed for the salt string
 	String SALTCHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
@@ -78,7 +97,7 @@
     Statement st = con.createStatement();
     ResultSet rs = st.executeQuery("SELECT * FROM users WHERE username='"
     		+ user + "'");
-    if (rs.next() || !validInput) {
+    if (rs.next() || !validInput || !validPassword) {
     	// Have a result; username already taken.
         // TODO: use session state rather than request parameters for failure info
     	response.sendRedirect("index.jsp?create_failure=1");
