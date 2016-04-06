@@ -6,8 +6,8 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.annotation.*;
 
-@WebFilter(filterName = "ValidateSalt", urlPatterns = {"/login.jsp", "/register.jsp", "/Comment", "/Uploader", "/Invite"})
-public class ValidateSalt implements Filter  {
+@WebFilter(filterName = "ValidateToken", urlPatterns = {"/login.jsp", "/register.jsp", "/Comment", "/Uploader", "/Invite"})
+public class ValidateToken implements Filter  {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -27,17 +27,17 @@ public class ValidateSalt implements Filter  {
 
 
         final String csrfKey = CSRFConfig.tokenKey();
-        String salt = (String) httpReq.getParameter(csrfKey);
+        String token = (String) httpReq.getParameter(csrfKey);
 
-        // Validate that the salt is in the cache
-        String storedSalt = (String) httpReq.getSession().getAttribute(csrfKey);
+        // Validate that the token is in the cache
+        String storedToken = (String) httpReq.getSession().getAttribute(csrfKey);
 
-        System.out.println("Validate salt: "+ salt);
-        System.out.println("Validate storedSalt: "+ storedSalt);
+        System.out.println("Validate token: "+ token);
+        System.out.println("Validate storedToken: "+ storedToken);
 
-        if (storedSalt != null && salt != null && storedSalt.equals(salt)){
+        if (storedToken != null && token != null && storedToken.equals(token)){
 
-            // If the salt is in the cache, we move on
+            // If the token is in the cache, we move on
             chain.doFilter(request, response);
         } else {
             // Otherwise we throw an exception aborting the request flow

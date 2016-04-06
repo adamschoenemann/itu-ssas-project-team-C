@@ -10,8 +10,8 @@ import javax.servlet.annotation.*;
 import java.security.SecureRandom;
 import java.math.BigInteger;
 
-@WebFilter(filterName = "LoadSalt", urlPatterns = "/*")
-public class LoadSalt implements Filter {
+@WebFilter(filterName = "LoadToken", urlPatterns = "/*")
+public class LoadToken implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -20,19 +20,19 @@ public class LoadSalt implements Filter {
         // Assume its HTTP
         HttpServletRequest httpReq = (HttpServletRequest) request;
 
-        String salt = (String) httpReq.getSession().getAttribute(CSRFConfig.tokenKey());
+        String token = (String) httpReq.getSession().getAttribute(CSRFConfig.tokenKey());
 
-        System.out.println("Salt found: " + salt);
+        System.out.println("Token found: " + token);
 
-        if (salt == null) {
-        // Generate the salt and store it in the users cache
-            salt = genToken();
-            httpReq.getSession().setAttribute(CSRFConfig.tokenKey(), salt);
-            System.out.println("salt stored: "+salt);
+        if (token == null) {
+        // Generate the token and store it in the users cache
+            token = genToken();
+            httpReq.getSession().setAttribute(CSRFConfig.tokenKey(), token);
+            System.out.println("token stored: "+token);
         }
-        // Add the salt to the current request so it can be used
+        // Add the token to the current request so it can be used
         // by the page rendered in this request
-        httpReq.setAttribute(CSRFConfig.tokenKey(), salt);
+        httpReq.setAttribute(CSRFConfig.tokenKey(), token);
 
         chain.doFilter(request, response);
     }
