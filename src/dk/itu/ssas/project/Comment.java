@@ -1,9 +1,7 @@
 package dk.itu.ssas.project;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -31,24 +29,29 @@ public class Comment extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		 try
-		 {
+		try
+		{
 			 // TODO: check session state
-			 Connection con = DB.getConnection();
+			Connection con = DB.getConnection();
 
-			 // TODO: use prepared statement
-			 Statement st = con.createStatement();
-			 st.executeUpdate("INSERT INTO comments (image_id, user_id, comment) VALUES (" +
-				 request.getParameter("image_id") + ", " +
-				 // TODO: get user_id from session
-				 request.getParameter("user_id") + ", '" +
-				 request.getParameter("comment") + "')");
-			 response.sendRedirect("main.jsp");
-		 }
-		 catch (Exception e)
-		 {
-			 throw new ServletException("SQL malfunction.", e);
-		 }
+			PreparedStatement st = con.prepareStatement(
+                "INSERT INTO comments (image_id, user_id, comment) VALUES (?, ?, ?)"
+            );
+            st.setInt(1, Integer.parseInt((String)request.getParameter("image_id")));
+            st.setInt(2, Integer.parseInt((String)request.getSession().getAttribute("user")));
+            st.setString(3, (String)request.getParameter("comment"));
+
+            st.executeUpdate();
+
+			response.sendRedirect("main.jsp");
+		}
+		catch (SQLException e)
+		{
+            throw new ServletException("SQL malfunction.", e);
+		}
+        catch (NumberFormatException e) {
+            throw new ServletException("Incorect numeric parameter", e);
+        }
 	}
 
 }
