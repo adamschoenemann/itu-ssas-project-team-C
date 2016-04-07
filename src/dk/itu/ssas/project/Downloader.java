@@ -22,10 +22,10 @@ public class Downloader extends HttpServlet {
         super();
     }
 
-    protected void imageResponse(Connection con, String imageId, HttpServletResponse response)
+    protected void imageResponse(Connection con, int imageId, HttpServletResponse response)
         throws SQLException, IOException {
         PreparedStatement st = con.prepareStatement("SELECT jpeg FROM images WHERE id = ?");
-        st.setString(1, imageId);
+        st.setInt(1, imageId);
 
         ResultSet image = st.executeQuery();
         image.next();
@@ -35,22 +35,6 @@ public class Downloader extends HttpServlet {
         response.getOutputStream().write(content);
     }
 
-    protected boolean hasPermission(Connection con, int userId, String imageId)
-        throws SQLException {
-
-        PreparedStatement s = con.prepareStatement("SELECT * FROM perms WHERE image_id = ?");
-        s.setString(1, imageId);
-
-        ResultSet permsR = s.executeQuery();
-
-        while(permsR.next()) {
-            int sharedWith = permsR.getInt("user_id");
-            if (sharedWith == userId) {
-                return true;
-            }
-        }
-        return false;
-    }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -72,17 +56,19 @@ public class Downloader extends HttpServlet {
 
 			Connection con = DB.getConnection();
 
-            String ownerQ = "SELECT owner FROM images WHERE id = ?";
-            PreparedStatement stmt = con.prepareStatement(ownerQ);
-            String imageId = request.getParameter("image_id");
+            int imageId = Integer.parseInt(request.getParameter("image_id"));
 
-            stmt.setString(1, imageId);
+            PreparedStatement stmt = con.prepareStatement(
+                "SELECT owner FROM images WHERE id = ?"
+            );
+
+            stmt.setInt(1, imageId);
             ResultSet ownerR = stmt.executeQuery();
             ownerR.next(); // advance
             int owner = ownerR.getInt("owner");
 
             // owner is user
-            if (owner == userId || hasPermission(con, userId, imageId)) {
+            if (owner == userId || Queries.hasPermission(con, userId, imageId)) {
                 imageResponse(con, imageId, response);
                 return;
             }
