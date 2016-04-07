@@ -22,12 +22,12 @@ public class Downloader extends HttpServlet {
         super();
     }
 
-    protected void imageResponse(Connection con, String image_id, HttpServletResponse response)
+    protected void imageResponse(Connection con, String imageId, HttpServletResponse response)
         throws SQLException, IOException {
-        // TODO: Use prepared statement
-        Statement st = con.createStatement();
-        // TODO: Include permission check
-        ResultSet image = st.executeQuery("SELECT jpeg FROM images WHERE id = " + image_id);
+        PreparedStatement st = con.prepareStatement("SELECT jpeg FROM images WHERE id = ?");
+        st.setString(1, imageId);
+
+        ResultSet image = st.executeQuery();
         image.next();
         byte[] content = image.getBytes("jpeg");
         response.setContentType("image/jpeg");
@@ -74,16 +74,16 @@ public class Downloader extends HttpServlet {
 
             String ownerQ = "SELECT owner FROM images WHERE id = ?";
             PreparedStatement stmt = con.prepareStatement(ownerQ);
-            String image_id = request.getParameter("image_id");
+            String imageId = request.getParameter("image_id");
 
-            stmt.setString(1, image_id);
+            stmt.setString(1, imageId);
             ResultSet ownerR = stmt.executeQuery();
             ownerR.next(); // advance
             int owner = ownerR.getInt("owner");
 
             // owner is user
-            if (owner == userId || hasPermission(con, userId, image_id)) {
-                imageResponse(con, image_id, response);
+            if (owner == userId || hasPermission(con, userId, imageId)) {
+                imageResponse(con, imageId, response);
                 return;
             }
             // we dont have permission
