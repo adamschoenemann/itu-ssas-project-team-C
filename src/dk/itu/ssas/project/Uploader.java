@@ -93,7 +93,7 @@ public class Uploader extends HttpServlet {
             System.err.println("Something went wrong with upload");
 		}
 
-        response.sendRedirect("main.jsp");
+        response.sendRedirect("main");
 	}
 
 }

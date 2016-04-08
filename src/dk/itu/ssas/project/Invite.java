@@ -59,7 +59,7 @@ public class Invite extends HttpServlet {
 
                 st.executeUpdate();
 
-                response.sendRedirect("main.jsp");
+                response.sendRedirect("main");
             } else {
                 response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                 return;

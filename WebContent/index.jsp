@@ -5,7 +5,7 @@
 <%
 String csrfToken = request.getAttribute("csrfPreventionToken").toString();
 if (session.getAttribute("user") != null) {
-    response.sendRedirect("main.jsp");
+    response.sendRedirect("main");
 }
 %>
 <html>
@@ -22,7 +22,7 @@ if (session.getAttribute("user") != null) {
 	<h3>Login failure. Try again?</h3>
 	<% } %>
 
-	<form method="post" action="login.jsp">
+	<form method="post" action="login">
         <input type="hidden" name="csrfPreventionToken" value='<%= csrfToken %>'/>
         Username: <input type="text" name="username"><br>
                 <%-- TODO: use password type field --%>
@@ -39,7 +39,7 @@ if (session.getAttribute("user") != null) {
 	<h3>Username already taken. Try again?</h3>
 	<% } %>
 
-	<form method="post" action="register.jsp">
+	<form method="post" action="register">
         <input type="hidden" name="csrfPreventionToken" value='<%= csrfToken %>'/>
         Username: <input type="text" name="username" /><br>
         Password: <input type="password" name="password" /><br>

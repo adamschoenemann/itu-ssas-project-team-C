@@ -6,7 +6,7 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.annotation.*;
 
-@WebFilter(filterName = "ValidateToken", urlPatterns = {"/login.jsp", "/register.jsp", "/Comment", "/Uploader", "/Invite"})
+@WebFilter(filterName = "ValidateToken", urlPatterns = {"/login", "/register", "/Comment", "/Uploader", "/Invite"})
 public class ValidateToken implements Filter  {
 
     @Override

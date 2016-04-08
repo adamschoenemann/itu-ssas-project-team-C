@@ -19,7 +19,7 @@
 
     // only allow POST method
     if (request.getMethod() != "POST") {
-        response.sendRedirect("main.jsp");
+        response.sendRedirect("main");
     }
 
 	String user = request.getParameter("username");
@@ -105,7 +105,8 @@
     if (rs.next() || !validInput || !validPassword) {
     	// Have a result; username already taken.
         // TODO: use session state rather than request parameters for failure info
-    	response.sendRedirect("index.jsp?create_failure=1");
+        String contextPath = request.getContextPath();
+    	response.sendRedirect(contextPath + "?create_failure=1");
     } else {
     	// No result, so we can create a new user
     	st.executeUpdate("INSERT INTO users (username, salt, password) values ('"
@@ -115,6 +116,6 @@
     	session.setAttribute("user", rs.getString(1));
     	session.setAttribute("username", user);
     	//session.setAttribute("salt", salt);			// not sure if we need this
-    	response.sendRedirect("main.jsp");
+    	response.sendRedirect("main");
     }
 %>

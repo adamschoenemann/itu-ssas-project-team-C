@@ -15,7 +15,7 @@
 
     // only allow POST method
     if (request.getMethod() != "POST") {
-        response.sendRedirect("main.jsp");
+        response.sendRedirect("main");
     }
     String user = request.getParameter("username");
     String pwd = request.getParameter("password");
@@ -81,16 +81,18 @@
         	session.setAttribute("user", rs2.getString(1));
         	session.setAttribute("username", user);
         	//session.setAttribute("salt", salt);			// not sure if we need this
-        	response.sendRedirect("main.jsp");
+        	response.sendRedirect("main");
         } else {
         	// No result; user failed to authenticate; try again.
             // TODO: use session state rather than request parameters for failure info
-        	response.sendRedirect("index.jsp?login_failure=1");
+            String contextPath = request.getContextPath();
+        	response.sendRedirect(contextPath + "?login_failure=1");
         }
 
     } else {
     	// No result; user failed to authenticate; try again.
         // TODO: use session state rather than request parameters for failure info
-    	response.sendRedirect("index.jsp?login_failure=1");
+    	String contextPath = request.getContextPath();
+        response.sendRedirect(contextPath + "?login_failure=1");
     }
 %>
