@@ -11,10 +11,10 @@ if (session.getAttribute("user") != null) {
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<title>SSAS TeamC Photo Sharing Webapp</title>
+		<title>PhotoShare</title>
 	</head>
 <body>
-	<h1>SSAS TeamC Photo Sharing Webapp</h1>
+	<h1>PhotoShare</h1>
 
 	<h2>Existing users:</h2>
 
