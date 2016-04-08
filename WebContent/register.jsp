@@ -17,26 +17,31 @@
 
 <%
 
+    // only allow POST method
+    if (request.getMethod() != "POST") {
+        response.sendRedirect("main.jsp");
+    }
+
 	String user = request.getParameter("username");
 	String pwd = request.getParameter("password");
-	
+
     // create new scanner, that checks the username input
 	Scanner scanUser = new Scanner(user);
     boolean validInput = true;
-    
+
     //System.out.println(!scanUser.hasNext("^[a-zA-Z0-9-_]+$"));
-    
+
 	// allow only alphanumeric usernames including dashes and underscores
 	if(!scanUser.hasNext("^[a-zA-Z0-9-_]+$")){
         validInput = false;
-	} 
-	
+	}
+
 	// close the user scanner
 	scanUser.close();
-	
+
 	Pattern pattern;
 	Matcher matcher;
-	
+
 	// password policy
 	// ---------------
 	// contain at least one digit
@@ -44,30 +49,30 @@
 	// contain at least one upper case character
 	// contain at least on special character from [ @ # $ % ! . ]
 	// between 8 and 40 characters long
-			
+
 	String PASSWORD_PATTERN = "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%!]).{8,40})";
-	
+
 	pattern = Pattern.compile(PASSWORD_PATTERN);
 	matcher = pattern.matcher(pwd);
-	
+
 	boolean validPassword = matcher.matches();
 
 	// characters allowed for the salt string
 	String SALTCHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-	
+
 	StringBuffer saltBuffer = new StringBuffer();
 	java.util.Random rnd = new java.util.Random();
-	
+
 	// build a random 16 chars salt
 	while (saltBuffer.length() < 16){
 		int index = (int) (rnd.nextFloat() * SALTCHARS.length());
 		saltBuffer.append(SALTCHARS.substring(index, index+1));
 	}
-	String salt = saltBuffer.toString();	
-    
+	String salt = saltBuffer.toString();
+
     // add salt to password
     String saltedPwd = pwd + salt;
-    
+
     // use SHA-512 to hash the salted password
     String generatedPassword = null;
     try {
@@ -81,12 +86,12 @@
             sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
         }
         generatedPassword = sb.toString();
-    } 
-    catch (NoSuchAlgorithmException e) 
+    }
+    catch (NoSuchAlgorithmException e)
     {
         e.printStackTrace();
     }
-    
+
     // only for debugging!!!
     //System.out.println("password:              " + pwd);
     //System.out.println("password + salt:       " + saltedPwd);

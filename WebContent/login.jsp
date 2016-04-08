@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" 
+    pageEncoding="UTF-8"
     import = "java.sql.*"
     import = "dk.itu.ssas.project.DB"
 %>
@@ -12,37 +12,42 @@
 <%@ page import="java.util.Scanner" %>
 
 <%
-    String user = request.getParameter("username");   
+
+    // only allow POST method
+    if (request.getMethod() != "POST") {
+        response.sendRedirect("main.jsp");
+    }
+    String user = request.getParameter("username");
     String pwd = request.getParameter("password");
- 
+
     // create new scanner, that checks the username input
 	Scanner scanUser = new Scanner(user);
     boolean validInput = true;
 
     //System.out.println(!scanUser.hasNext("^[a-zA-Z0-9-_]+$"));
-    
+
 	// allow only alphanumeric usernames including dashes and underscores
 	if(!scanUser.hasNext("^[a-zA-Z0-9-_]+$")){
         validInput = false;
-	} 
-	
+	}
+
 	// close the user scanner
-	scanUser.close();	
-   
+	scanUser.close();
+
     Connection con = DB.getConnection();
     // TODO: use parameterized statement
     Statement st1 = con.createStatement();
-    
+
     ResultSet rs1 = st1.executeQuery("SELECT id,salt FROM users WHERE username='" + user + "'");
-    
+
     if (rs1.next() && validInput) {
-    	
+
     	// get salt of found user
     	String salt = rs1.getString(2);
-    	
+
     	// add salt to password
         String saltedPwd = pwd + salt;
-    	
+
         // use SHA-512 to hash the salted password
         String generatedPassword = null;
         try {
@@ -56,19 +61,19 @@
                 sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
             }
             generatedPassword = sb.toString();
-        } 
-        catch (NoSuchAlgorithmException e) 
+        }
+        catch (NoSuchAlgorithmException e)
         {
             e.printStackTrace();
         }
-    	
+
         // only for debugging!!!
     	//System.out.println("salt from database:    " + salt);
     	//System.out.println("password + salt:       " + saltedPwd);
         //System.out.println("hash(password + salt): " + generatedPassword);
-        
+
         Statement st2 = con.createStatement();
-        
+
         ResultSet rs2 = st2.executeQuery("SELECT id FROM users WHERE username='"
         		+ user + "' AND " + "password='" + generatedPassword + "'");
         if (rs2.next()) {
@@ -82,7 +87,7 @@
             // TODO: use session state rather than request parameters for failure info
         	response.sendRedirect("index.jsp?login_failure=1");
         }
-    	
+
     } else {
     	// No result; user failed to authenticate; try again.
         // TODO: use session state rather than request parameters for failure info
