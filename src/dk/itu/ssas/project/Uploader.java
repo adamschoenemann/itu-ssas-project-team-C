@@ -81,7 +81,6 @@ public class Uploader extends HttpServlet {
 			rs.next();
 			String image_id = rs.getString(1);
 
-            // TODO: Fix SQL injection
 			sql = "INSERT INTO perms (image_id, user_id) values (?, ?)";
             statement = con.prepareStatement(sql);
             statement.setInt(1, Integer.parseInt(image_id));
