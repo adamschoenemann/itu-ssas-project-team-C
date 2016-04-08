@@ -82,16 +82,21 @@ public class Uploader extends HttpServlet {
 			String image_id = rs.getString(1);
 
             // TODO: Fix SQL injection
-			sql = "INSERT INTO perms (image_id, user_id) values (" +
-					image_id + ", " + request.getSession().getAttribute("user") + ")";
+			sql = "INSERT INTO perms (image_id, user_id) values (?, ?)";
+            statement = con.prepareStatement(sql);
+            statement.setInt(1, Integer.parseInt(image_id));
+            statement.setInt(2, Integer.parseInt(userIdStr));
 
-			con.createStatement().executeUpdate(sql);
+			statement.executeUpdate();
 
 		}
 		catch (SQLException | FileUploadException e)
 		{
             System.err.println("Something went wrong with upload");
 		}
+        catch (NumberFormatException e) {
+            System.err.println("Received a non-numeric parameter where not expected");
+        }
 
         response.sendRedirect("main.jsp");
 	}
