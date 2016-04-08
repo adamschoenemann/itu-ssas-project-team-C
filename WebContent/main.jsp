@@ -36,8 +36,12 @@ ul {
 <%-- DONE - TODO: username could be a script right now! --%>
 <%-- DONE - TODO: html-escape all output to prevent XSS --%>
 
-<p>Hello, <%= StringEscapeUtils.escapeHtml( username ) %>!
-<p><form method="post" enctype="multipart/form-data" action="Uploader?csrfPreventionToken=<%= csrfToken %>">
+<p>Hello, <%= StringEscapeUtils.escapeHtml( username ) %>!</p>
+<form action="Logout" method="post">
+    <input type="hidden" name="csrfPreventionToken" value='<%= csrfToken %>'/>
+    <input type="submit" value="Log out" />
+</form>
+<form method="post" enctype="multipart/form-data" action="Uploader?csrfPreventionToken=<%= csrfToken %>">
 	Add a picture:
 	<input type="file" name="pic" accept="jpeg">
 	<input type="submit" value="Upload!">
@@ -134,9 +138,5 @@ ul {
 %>
 </ul>
 
-<form action="Logout" method="post">
-    <input type="hidden" name="csrfPreventionToken" value='<%= csrfToken %>'/>
-    <input type="submit" value="Log out" />
-</form>
 </body>
 </html>
