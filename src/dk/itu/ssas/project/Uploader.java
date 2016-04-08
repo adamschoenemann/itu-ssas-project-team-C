@@ -43,8 +43,16 @@ public class Uploader extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
-			 // TODO: check session state
-			 // TODO: is the factory used below really secure?
+
+            String userIdStr = (String) request.getSession().getAttribute("user");
+
+            // user not logged in
+            if (userIdStr == null) {
+                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                return;
+            }
+
+			// TODO: is the factory used below really secure?
 			// Create a factory for disk-based file items
 			DiskFileItemFactory factory = new DiskFileItemFactory();
 
@@ -66,25 +74,26 @@ public class Uploader extends HttpServlet {
 			String sql = "INSERT INTO images (jpeg, owner) values (?, ?)";
 			PreparedStatement statement = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 			statement.setBlob(1, iis);
-			statement.setString(2, request.getSession().getAttribute("user").toString());
+			statement.setString(2, userIdStr);
 			statement.executeUpdate();
 
 			ResultSet rs = statement.getGeneratedKeys();
 			rs.next();
 			String image_id = rs.getString(1);
 
+            // TODO: Fix SQL injection
 			sql = "INSERT INTO perms (image_id, user_id) values (" +
 					image_id + ", " + request.getSession().getAttribute("user") + ")";
 
 			con.createStatement().executeUpdate(sql);
 
-			response.sendRedirect("main.jsp");
 		}
 		catch (SQLException | FileUploadException e)
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+            System.err.println("Something went wrong with upload");
 		}
+
+        response.sendRedirect("main.jsp");
 	}
 
 }
