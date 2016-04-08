@@ -9,9 +9,12 @@
 <%-- TODO: add CSRF token to all forms --%>
 
 <%
-	String user_id = session.getAttribute("user").toString();
-	String username = session.getAttribute("username").toString();
-    String csrfToken = request.getAttribute("csrfPreventionToken").toString();
+	String user_id = (String) session.getAttribute("user");
+    if (user_id == null) {
+        response.sendRedirect("index.jsp");
+    }
+	String username = (String) session.getAttribute("username");
+    String csrfToken = (String) request.getAttribute("csrfPreventionToken");
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
