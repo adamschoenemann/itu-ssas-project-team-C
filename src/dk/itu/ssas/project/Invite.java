@@ -1,9 +1,7 @@
 package dk.itu.ssas.project;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -36,21 +34,46 @@ public class Invite extends HttpServlet {
 		{
 			 // TODO: use prepared statement
 			Connection con = DB.getConnection();
-			 // TODO: check permission
-			String sql =
-				"INSERT INTO perms (image_id, user_id) " +
-				"SELECT " + request.getParameter("image_id") + ", users.id " +
-		    	"FROM users " +
-			    "WHERE users.username = '" + request.getParameter("other") + "'";
-			System.out.println(sql);
-			Statement st = con.createStatement();
-			st.executeUpdate(sql);
 
-			response.sendRedirect("main.jsp");
+            String userIdStr = (String)request.getSession().getAttribute("user");
+            if (userIdStr == null) {
+                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                return;
+            }
+
+            int userId = Integer.parseInt(userIdStr);
+            int imageId = Integer.parseInt(request.getParameter("image_id"));
+            int owner = Queries.getImageUserId(con, imageId);
+            String otherUser = (String) request.getParameter("other");
+
+            if (userId == owner) {
+
+                PreparedStatement st = con.prepareStatement(
+                    "INSERT INTO perms (image_id, user_id) " +
+                    "SELECT ?, users.id FROM users " +
+                    "WHERE users.username = ?"
+                );
+
+                st.setInt(1, imageId);
+                st.setString(2, otherUser);
+
+                st.executeUpdate();
+
+                response.sendRedirect("main.jsp");
+            } else {
+                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                return;
+            }
+
+
 		}
 		catch (SQLException e)
 		{
 			throw new ServletException("SQL malfunction.", e);
 		}
+        catch (NumberFormatException e)
+        {
+            throw new ServletException("Incorrect numeric parameter");
+        }
 	}
 }
