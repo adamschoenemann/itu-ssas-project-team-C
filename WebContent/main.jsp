@@ -5,13 +5,11 @@
     import = "org.apache.commons.lang.*"
 %>
 
-<%-- TODO: check session state --%>
-<%-- TODO: add CSRF token to all forms --%>
-
 <%
 	String user_id = (String) session.getAttribute("user");
+    String contextPath = request.getContextPath();
     if (user_id == null) {
-        response.sendRedirect("index.jsp");
+        response.sendRedirect(contextPath);
     }
 	String username = (String) session.getAttribute("username");
     String csrfToken = (String) request.getAttribute("csrfPreventionToken");
