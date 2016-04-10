@@ -18,7 +18,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>SSAS Photo Sharing Project</title>
+<title>PhotoShare</title>
 <style>
 * {
 	font-family: helvetica-neue, helvetica, arial;
@@ -33,7 +33,7 @@ ul {
 
 <%-- DONE - TODO: username could be a script right now! --%>
 <%-- DONE - TODO: html-escape all output to prevent XSS --%>
-
+<h1>PhotoShare</h1>
 <p>Hello, <%= StringEscapeUtils.escapeHtml( username ) %>!</p>
 <form action="Logout" method="post">
     <input type="hidden" name="csrfPreventionToken" value='<%= csrfToken %>'/>

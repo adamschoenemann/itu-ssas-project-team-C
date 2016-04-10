@@ -1,6 +1,6 @@
-﻿execute the following commands in order to still use the current system with salted and hashed passwords:
+﻿-- execute the following commands in order to still use the current system with salted and hashed passwords:
 
-mysql -u SSAS -p 
+-- mysql -u SSAS -p 
 
 USE image_site_db;
 
@@ -8,7 +8,7 @@ ALTER TABLE users MODIFY password VARCHAR(128);
 
 ALTER TABLE users ADD salt VARCHAR(16) AFTER username;
 
-UPDATE users SET salt=’thisIsVeryRandom’;
+UPDATE users SET salt='thisIsVeryRandom';
 
 UPDATE users SET password='290904e44ee2b45d3a4796b4f2e5a07c8ca67468f4301f7c5e2e7eb87fc4acb55d635cb45cad95ca2dc0e163147c2ca9fb30e6e13aaa14393d66a163222a9f20' WHERE id = 1;
 

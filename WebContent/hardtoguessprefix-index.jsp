@@ -18,7 +18,8 @@ if (session.getAttribute("user") != null) {
 
 	<h2>Existing users:</h2>
 
-	<% if (request.getParameter("login_failure") != null) { %>
+	<% if (session.getAttribute("login_failure") != null) {
+		session.setAttribute("login_failure", null); %>
 	<h3>Login failure. Try again?</h3>
 	<% } %>
 
@@ -35,9 +36,10 @@ if (session.getAttribute("user") != null) {
 
 	<h2>New users:</h2>
 
-	<% if (request.getParameter("create_failure") != null) { %>
-	<h3>Username already taken. Try again?</h3>
-	<% } %>
+	<% if (session.getAttribute("create_failure") != null) { %>
+	<h3><%= session.getAttribute("create_failure") %>. Try again?</h3>
+	<%   session.setAttribute("create_failure", null);
+	   } %>
 
 	<form method="post" action="register">
         <input type="hidden" name="csrfPreventionToken" value='<%= csrfToken %>'/>
@@ -47,12 +49,17 @@ if (session.getAttribute("user") != null) {
         <input type="submit" value="Create">
     </form>
 
-	<h3>password policy:</h3>
-	<h4>- contain at least one digit</h4>
-	<h4>- contain at least one lower case character</h4>
-	<h4>- contain at least one upper case character</h4>
-	<h4>- contain at least on special character from [ @ # $ % ! . ]</h4>
-	<h4>- between 8 and 40 characters long</h4>
-
+	<h3>Username policy:</h3>
+	<ul>
+	<li>contain only letters, digits, dashes and underscores</li>
+    </ul>
+	<h3>Password policy:</h3>
+	<ul>
+	<li>contain at least one digit</li>
+	<li>contain at least one lower case character</li>
+	<li>contain at least one upper case character</li>
+	<li>contain at least on special character from [ @ # $ % ! . ]</li>
+	<li>between 8 and 40 characters long</li>
+    </ul>
 </body>
 </html>

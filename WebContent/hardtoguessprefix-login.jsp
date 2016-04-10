@@ -88,14 +88,16 @@
         } else {
         	// No result; user failed to authenticate; try again.
             // TODO: use session state rather than request parameters for failure info
+            session.setAttribute("login_failure", "Wrong password");
             String contextPath = request.getContextPath();
-        	response.sendRedirect(contextPath + "?login_failure=1");
+        	response.sendRedirect(contextPath);
         }
 
     } else {
     	// No result; user failed to authenticate; try again.
         // TODO: use session state rather than request parameters for failure info
     	String contextPath = request.getContextPath();
-        response.sendRedirect(contextPath + "?login_failure=1");
+    	session.setAttribute("login_failure", "Wrong username");
+        response.sendRedirect(contextPath);
     }
 %>
