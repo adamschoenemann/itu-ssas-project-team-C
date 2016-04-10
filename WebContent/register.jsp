@@ -99,9 +99,11 @@
 
     Connection con = DB.getConnection();
  	// TODO: use parameterized statement
-    Statement st = con.createStatement();
-    ResultSet rs = st.executeQuery("SELECT * FROM users WHERE username='"
-    		+ user + "'");
+    String selectUserFromUsers = "SELECT * FROM users WHERE username=?;";
+	PreparedStatement ps = con.prepareStatement(selectUserFromUsers);
+	ps.setString(1, user);
+ 	ResultSet rs = ps.executeQuery();
+ 	
     if (rs.next() || !validInput || !validPassword) {
     	// Have a result; username already taken.
         // TODO: use session state rather than request parameters for failure info
@@ -109,9 +111,13 @@
     	response.sendRedirect(contextPath + "?create_failure=1");
     } else {
     	// No result, so we can create a new user
-    	st.executeUpdate("INSERT INTO users (username, salt, password) values ('"
-    			+ user + "', '" + salt + "', '" + generatedPassword + "')");
-    	rs = st.executeQuery("SELECT * FROM users WHERE username='" + user + "'");
+    	String addNewUser = "INSERT INTO users (username, salt, password) values (?, ?, ?);";
+    	PreparedStatement ps2 = con.prepareStatement(addNewUser);
+    	ps2.setString(1, user);
+    	ps2.setString(2, salt);
+    	ps2.setString(3, generatedPassword);
+    	rs = ps2.executeQuery();
+ 
     	rs.next();
     	session.setAttribute("user", rs.getString(1));
     	session.setAttribute("username", user);

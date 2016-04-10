@@ -47,34 +47,42 @@ ul {
 <ul>
 <%
 	Connection con = DB.getConnection();
-    Statement st = con.createStatement();
-    Statement st2 = con.createStatement();
 
-    ResultSet image_ids = st.executeQuery(
-    	"SELECT DISTINCT image_id FROM perms WHERE perms.user_id = " + user_id);
+    String selectImageIdFromPerms = "SELECT DISTINCT image_id FROM perms WHERE perms.user_id = ?;";
+    PreparedStatement ps = con.prepareStatement(selectImageIdFromPerms);
+    ps.setString(1, user_id);
+    ResultSet image_ids = ps.executeQuery();
 
+
+    String selectUsernameFromUsersJoinedImages = 
+    		"SELECT username FROM users INNER JOIN images WHERE users.id = images.owner AND images.id = ?;";
+    PreparedStatement ps2 = con.prepareStatement(selectUsernameFromUsersJoinedImages);
+    
+    String selectUsernameFromUsersJoinedPerms =
+    		"SELECT users.username FROM users INNER JOIN perms " +
+    		"WHERE users.id = perms.user_id AND perms.image_id = ?;";
+    PreparedStatement ps3 = con.prepareStatement(selectUsernameFromUsersJoinedPerms)
+    	
+    String selectCommentAndUsernameFromUsersJoinedComments =
+    		"SELECT comments.comment, users.username FROM comments INNER JOIN users " +
+    	    "WHERE users.id = comments.user_id AND comments.image_id = ?;";	
+    PreparedStatement ps4 = con.prepareStatement(selectCommentAndUsernameFromUsersJoinedComments)
+    				
     while (image_ids.next()) {
-    	  String image_id = image_ids.getString(1);
-    	  ResultSet other = st2.executeQuery(
-              "SELECT username " +
-              "FROM users INNER JOIN images " +
-              "WHERE users.id = images.owner " +
-              "AND   images.id = " + image_id
-    	  );
-    	  other.next();
-    	  String other_name = other.getString(1);
+    	String image_id = image_ids.getString(1);
+        ps2.setString(1, image_id);
+        ResultSet other = ps2.executeQuery();
+    	other.next();
+    	String other_name = other.getString(1);
     	  // pageContext.setAttribute("other_name", other.getString(1));
   %>
 	<li> Posted by <%= StringEscapeUtils.escapeHtml( other_name ) %> :<br><br>
 	   <img src="Downloader?image_id=<%= image_id %>" width="60%"><br>
 	    Shared with:
-<%
-		ResultSet viewers = st2.executeQuery(
-			"SELECT users.username " +
-		    "FROM users INNER JOIN perms " +
-			"WHERE users.id = perms.user_id " +
-		    "AND perms.image_id = " + image_id
-		);
+<%		
+		// ps3: SELECT users.username FROM users INNER JOIN perms WHERE users.id = perms.user_id AND perms.image_id = ?;
+		ps3.setString(1, image_id);
+		ResultSet viewers = ps3.executeQuery();
 		while (viewers.next()) {
 			String sharee = viewers.getString(1);
 			//pageContext.setAttribute("sharee",sharee);
@@ -90,14 +98,9 @@ ul {
 %>
 		<br><br>
 <%
-
-
-        ResultSet comments = st2.executeQuery(
-        	"SELECT comments.comment, users.username " +
-            "FROM comments INNER JOIN users " +
-            "WHERE users.id = comments.user_id " +
-            "AND comments.image_id = " + image_id
-        );
+		// ps4 = SELECT comments.comment, users.username FROM comments INNER JOIN user WHERE users.id = comments.user_id AND comments.image_id = ?
+		ps4.setString(1, image_id);	
+        ResultSet comments = ps4.executeQuery();
         while (comments.next()) {
         	// DONE - TODO: html-escape all output to prevent XSS
 %>
