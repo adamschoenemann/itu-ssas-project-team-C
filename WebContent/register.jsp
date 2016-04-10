@@ -32,7 +32,7 @@
     //System.out.println(!scanUser.hasNext("^[a-zA-Z0-9-_]+$"));
 
 	// allow only alphanumeric usernames including dashes and underscores
-	if(!scanUser.hasNext("^[a-zA-Z0-9-_]+$")){
+	if(!scanUser.hasNext("^[a-zA-Z0-9_-]+$")){
         validInput = false;
 	}
 
@@ -50,7 +50,7 @@
 	// contain at least on special character from [ @ # $ % ! . ]
 	// between 8 and 40 characters long
 
-	String PASSWORD_PATTERN = "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%!]).{8,40})";
+	String PASSWORD_PATTERN = "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%!.]).{8,40})";
 
 	pattern = Pattern.compile(PASSWORD_PATTERN);
 	matcher = pattern.matcher(pwd);
@@ -103,10 +103,10 @@
     ResultSet rs = st.executeQuery("SELECT * FROM users WHERE username='"
     		+ user + "'");
     if (rs.next() || !validInput || !validPassword) {
-    	// Have a result; username already taken.
-        // TODO: use session state rather than request parameters for failure info
+    	// Have a result; username already taken. Or invalid user name or password.
+        session.setAttribute("create_failure", validInput ? validPassword ? "Username already taken" : "Password not valid" : "User name not valid");
         String contextPath = request.getContextPath();
-    	response.sendRedirect(contextPath + "?create_failure=1");
+    	response.sendRedirect(contextPath);
     } else {
     	// No result, so we can create a new user
     	st.executeUpdate("INSERT INTO users (username, salt, password) values ('"
