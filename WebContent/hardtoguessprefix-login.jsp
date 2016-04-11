@@ -35,10 +35,10 @@
 	scanUser.close();
 
     Connection con = DB.getConnection();
-    
+
     String selectUserIdAndSalt = "SELECT id, salt FROM users WHERE username=?;";
  	PreparedStatement ps = con.prepareStatement(selectUserIdAndSalt);
-    ps.setString(1, user)
+    ps.setString(1, user);
     ResultSet rs1 = ps.executeQuery();
 
     if (rs1.next() && validInput) {
@@ -72,13 +72,13 @@
     	//System.out.println("salt from database:    " + salt);
     	//System.out.println("password + salt:       " + saltedPwd);
         //System.out.println("hash(password + salt): " + generatedPassword);
-		
+
         String selectUserId = "SELECT id FROM users WHERE username=? AND password=?;";
         PreparedStatement ps2 = con.prepareStatement(selectUserId);
         ps2.setString(1, user);
         ps2.setString(2, generatedPassword);
         ResultSet rs2 = ps2.executeQuery();
-        
+
         if (rs2.next()) {
         	// Have a result; user is authenticated.
         	session.setAttribute("user", rs2.getString(1));

@@ -13,6 +13,11 @@ if (session.getAttribute("user") != null) {
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<title>PhotoShare</title>
 	</head>
+    <style>
+    pre {
+        display: inline;
+    }
+    </style>
 <body>
 	<h1>PhotoShare</h1>
 
@@ -58,7 +63,7 @@ if (session.getAttribute("user") != null) {
 	<li>contain at least one digit</li>
 	<li>contain at least one lower case character</li>
 	<li>contain at least one upper case character</li>
-	<li>contain at least on special character from [ @ # $ % ! . ]</li>
+	<li>contain at least one special character e.g &nbsp;<pre>@ # $ % ! . </pre></li>
 	<li>between 8 and 40 characters long</li>
     </ul>
 </body>

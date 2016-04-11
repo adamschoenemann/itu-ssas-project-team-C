@@ -50,7 +50,10 @@
 	// contain at least on special character from [ @ # $ % ! . ]
 	// between 8 and 40 characters long
 
-	String PASSWORD_PATTERN = "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%!.]).{8,40})";
+    final String SPECIAL_CHAR_PATTERN = "[^A-Za-z0-9]";
+	final String PASSWORD_PATTERN =
+        "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*" + SPECIAL_CHAR_PATTERN +
+        ").{8,40})";
 
 	pattern = Pattern.compile(PASSWORD_PATTERN);
 	matcher = pattern.matcher(pwd);
@@ -103,7 +106,7 @@
 	PreparedStatement ps = con.prepareStatement(selectUserFromUsers);
 	ps.setString(1, user);
  	ResultSet rs = ps.executeQuery();
- 	
+
     if (rs.next() || !validInput || !validPassword) {
     	// Have a result; username already taken. Or invalid user name or password.
         session.setAttribute("create_failure", validInput ? validPassword ? "Username already taken" : "Password not valid" : "User name not valid");
@@ -116,10 +119,9 @@
     	ps2.setString(1, user);
     	ps2.setString(2, salt);
     	ps2.setString(3, generatedPassword);
-    	rs = ps2.executeQuery();
- 
-    	rs.next();
-    	session.setAttribute("user", rs.getString(1));
+    	int userId = ps2.executeUpdate();
+
+    	session.setAttribute("user", Integer.toString(userId));
     	session.setAttribute("username", user);
     	//session.setAttribute("salt", salt);			// not sure if we need this
     	response.sendRedirect("main");

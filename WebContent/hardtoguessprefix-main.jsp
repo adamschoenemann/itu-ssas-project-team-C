@@ -54,20 +54,20 @@ ul {
     ResultSet image_ids = ps.executeQuery();
 
 
-    String selectUsernameFromUsersJoinedImages = 
+    String selectUsernameFromUsersJoinedImages =
     		"SELECT username FROM users INNER JOIN images WHERE users.id = images.owner AND images.id = ?;";
     PreparedStatement ps2 = con.prepareStatement(selectUsernameFromUsersJoinedImages);
-    
+
     String selectUsernameFromUsersJoinedPerms =
     		"SELECT users.username FROM users INNER JOIN perms " +
     		"WHERE users.id = perms.user_id AND perms.image_id = ?;";
-    PreparedStatement ps3 = con.prepareStatement(selectUsernameFromUsersJoinedPerms)
-    	
+    PreparedStatement ps3 = con.prepareStatement(selectUsernameFromUsersJoinedPerms);
+
     String selectCommentAndUsernameFromUsersJoinedComments =
     		"SELECT comments.comment, users.username FROM comments INNER JOIN users " +
-    	    "WHERE users.id = comments.user_id AND comments.image_id = ?;";	
-    PreparedStatement ps4 = con.prepareStatement(selectCommentAndUsernameFromUsersJoinedComments)
-    				
+    	    "WHERE users.id = comments.user_id AND comments.image_id = ?;";
+    PreparedStatement ps4 = con.prepareStatement(selectCommentAndUsernameFromUsersJoinedComments);
+
     while (image_ids.next()) {
     	String image_id = image_ids.getString(1);
         ps2.setString(1, image_id);
@@ -79,7 +79,7 @@ ul {
 	<li> Posted by <%= StringEscapeUtils.escapeHtml( other_name ) %> :<br><br>
 	   <img src="Downloader?image_id=<%= image_id %>" width="60%"><br>
 	    Shared with:
-<%		
+<%
 		// ps3: SELECT users.username FROM users INNER JOIN perms WHERE users.id = perms.user_id AND perms.image_id = ?;
 		ps3.setString(1, image_id);
 		ResultSet viewers = ps3.executeQuery();
@@ -99,7 +99,7 @@ ul {
 		<br><br>
 <%
 		// ps4 = SELECT comments.comment, users.username FROM comments INNER JOIN user WHERE users.id = comments.user_id AND comments.image_id = ?
-		ps4.setString(1, image_id);	
+		ps4.setString(1, image_id);
         ResultSet comments = ps4.executeQuery();
         while (comments.next()) {
         	// DONE - TODO: html-escape all output to prevent XSS
