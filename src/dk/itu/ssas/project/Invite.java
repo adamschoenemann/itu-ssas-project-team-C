@@ -29,10 +29,8 @@ public class Invite extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
-		 // TODO: check session state
 		try
 		{
-			 // TODO: use prepared statement
 			Connection con = DB.getConnection();
 
             String userIdStr = (String)request.getSession().getAttribute("user");

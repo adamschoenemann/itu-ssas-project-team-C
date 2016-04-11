@@ -41,7 +41,6 @@ public class Downloader extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
- 		// TODO: Check session state
 		try
 		{
             HttpSession session = request.getSession();

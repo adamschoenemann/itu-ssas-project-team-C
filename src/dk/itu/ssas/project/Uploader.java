@@ -52,7 +52,6 @@ public class Uploader extends HttpServlet {
                 return;
             }
 
-			// TODO: is the factory used below really secure?
 			// Create a factory for disk-based file items
 			DiskFileItemFactory factory = new DiskFileItemFactory();
 

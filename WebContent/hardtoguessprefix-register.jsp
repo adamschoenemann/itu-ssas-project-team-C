@@ -102,7 +102,6 @@
     //System.out.println("hash(password + salt): " + generatedPassword);
 
     Connection con = DB.getConnection();
- 	// TODO: use parameterized statement
     String selectUserFromUsers = "SELECT * FROM users WHERE username=?;";
 	PreparedStatement ps = con.prepareStatement(selectUserFromUsers);
 	ps.setString(1, user);

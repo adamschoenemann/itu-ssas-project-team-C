@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%-- TODO: session state validation --%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%
 String csrfToken = request.getAttribute("csrfPreventionToken").toString();
@@ -31,7 +30,6 @@ if (session.getAttribute("user") != null) {
 	<form method="post" action="login">
         <input type="hidden" name="csrfPreventionToken" value='<%= csrfToken %>'/>
         Username: <input type="text" name="username"><br>
-                <%-- TODO: use password type field --%>
         Password: <input type="password" name="password"><br>
         <input type="reset" value="Reset">
         <input type="submit" value="Login">

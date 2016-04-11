@@ -29,7 +29,6 @@ public class Comment extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try
 		{
-			 // TODO: check session state
 			Connection con = DB.getConnection();
             String userIdStr = (String) request.getSession().getAttribute("user");
 

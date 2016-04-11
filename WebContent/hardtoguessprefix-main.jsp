@@ -31,8 +31,6 @@ ul {
 </head>
 <body>
 
-<%-- DONE - TODO: username could be a script right now! --%>
-<%-- DONE - TODO: html-escape all output to prevent XSS --%>
 <h1>PhotoShare</h1>
 <p>Hello, <%= StringEscapeUtils.escapeHtml( username ) %>!</p>
 <form action="Logout" method="post">
@@ -90,7 +88,6 @@ ul {
 				continue;
 			}
 
-		// DONE - TODO: html-escape all output to prevent XSS
 %>
 		<%= StringEscapeUtils.escapeHtml( sharee ) %>
 <%
@@ -102,7 +99,6 @@ ul {
 		ps4.setString(1, image_id);
         ResultSet comments = ps4.executeQuery();
         while (comments.next()) {
-        	// DONE - TODO: html-escape all output to prevent XSS
 %>
 		From <%= StringEscapeUtils.escapeHtml( comments.getString(2) ) %>!: "<%= StringEscapeUtils.escapeHtml( comments.getString(1) ) %>" <br>
 <%
@@ -113,13 +109,11 @@ ul {
             <input type="hidden" name="csrfPreventionToken" value='<%= csrfToken %>'/>
         	<input type='text' name='comment'>
             <input type="submit" value="Post comment!">
-            <%-- DONE - TODO: user_id should not be part of form (it's session info) --%>
             <%-- <input type="hidden" name="user_id" value='<%= user_id %>'> --%>
             <input type="hidden" name="image_id" value='<%= image_id %>'>
    		 </form>
    		<br>
 
-   		<%-- DONE - TODO: only output Invite form if users own image --%>
 
    	<%
    		String hide;
