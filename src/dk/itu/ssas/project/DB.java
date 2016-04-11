@@ -13,8 +13,8 @@ public class DB {
 
 		ds = new MysqlDataSource();
 		ds.setUrl("jdbc:mysql://localhost:3306/image_site_db");
-		ds.setUser("photoshare");
-		ds.setPassword("ssas16teamC");
+		ds.setUser("***");
+		ds.setPassword("***");
 		return ds.getConnection();
 	}
 }

@@ -25,15 +25,11 @@ public class ValidateToken implements Filter  {
             return;
         }
 
-
         final String csrfKey = CSRFConfig.tokenKey();
         String token = (String) httpReq.getParameter(csrfKey);
 
         // Validate that the token is in the cache
         String storedToken = (String) httpReq.getSession().getAttribute(csrfKey);
-
-        System.out.println("Validate token: "+ token);
-        System.out.println("Validate storedToken: "+ storedToken);
 
         if (storedToken != null && token != null && storedToken.equals(token)){
 

@@ -22,13 +22,10 @@ public class LoadToken implements Filter {
 
         String token = (String) httpReq.getSession().getAttribute(CSRFConfig.tokenKey());
 
-        System.out.println("Token found: " + token);
-
         if (token == null) {
         // Generate the token and store it in the users cache
             token = genToken();
             httpReq.getSession().setAttribute(CSRFConfig.tokenKey(), token);
-            System.out.println("token stored: "+token);
         }
         // Add the token to the current request so it can be used
         // by the page rendered in this request

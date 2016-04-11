@@ -28,8 +28,6 @@
 	Scanner scanUser = new Scanner(user);
     boolean validInput = true;
 
-    //System.out.println(!scanUser.hasNext("^[a-zA-Z0-9-_]+$"));
-
 	// allow only alphanumeric usernames including dashes and underscores
 	if(!scanUser.hasNext("^[a-zA-Z0-9-_]+$")){
         validInput = false;
@@ -72,11 +70,6 @@
             e.printStackTrace();
         }
 
-        // only for debugging!!!
-    	//System.out.println("salt from database:    " + salt);
-    	//System.out.println("password + salt:       " + saltedPwd);
-        //System.out.println("hash(password + salt): " + generatedPassword);
-
         String selectUserId = "SELECT id FROM users WHERE username=? AND password=?;";
         PreparedStatement ps2 = con.prepareStatement(selectUserId);
         ps2.setString(1, user);
@@ -87,7 +80,6 @@
         	// Have a result; user is authenticated.
         	session.setAttribute("user", rs2.getString(1));
         	session.setAttribute("username", user);
-        	//session.setAttribute("salt", salt);			// not sure if we need this
         	response.sendRedirect("main");
         } else {
         	// No result; user failed to authenticate; try again.

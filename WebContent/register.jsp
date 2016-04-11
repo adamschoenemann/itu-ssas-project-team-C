@@ -30,8 +30,6 @@
 	Scanner scanUser = new Scanner(user);
     boolean validInput = true;
 
-    //System.out.println(!scanUser.hasNext("^[a-zA-Z0-9-_]+$"));
-
 	// allow only alphanumeric usernames including dashes and underscores
 	if(!scanUser.hasNext("^[a-zA-Z0-9_-]+$")){
         validInput = false;
@@ -95,11 +93,6 @@
     {
         e.printStackTrace();
     }
-
-    // only for debugging!!!
-    //System.out.println("password:              " + pwd);
-    //System.out.println("password + salt:       " + saltedPwd);
-    //System.out.println("hash(password + salt): " + generatedPassword);
 
     Connection con = DB.getConnection();
     String selectUserFromUsers = "SELECT * FROM users WHERE username=?;";
