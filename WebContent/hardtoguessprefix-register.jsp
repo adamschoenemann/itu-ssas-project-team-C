@@ -4,10 +4,6 @@
     import = "dk.itu.ssas.project.DB"
 %>
 
-<%-- TODO: same here, input validation has to be added --%>
-<%-- OPTIONAL TODO: introduce a password policy --%>
-<%-- TODO: session state validation --%>
-<%-- TODO: set CSRF token in session --%>
 
 <%@ page import="java.security.MessageDigest" %>
 <%@ page import="java.security.NoSuchAlgorithmException" %>
@@ -17,9 +13,14 @@
 
 <%
 
+    if (request.getSession().getAttribute("user") != null) {
+        response.sendRedirect("main");
+        return;
+    }
     // only allow POST method
     if (request.getMethod() != "POST") {
         response.sendRedirect("main");
+        return;
     }
 
 	String user = request.getParameter("username");
@@ -119,9 +120,17 @@
     	ps2.setString(1, user);
     	ps2.setString(2, salt);
     	ps2.setString(3, generatedPassword);
-    	int userId = ps2.executeUpdate();
+    	ps2.executeUpdate();
 
-    	session.setAttribute("user", Integer.toString(userId));
+        PreparedStatement ps3 = con.prepareStatement(
+            "SELECT id FROM users ORDER BY id DESC LIMIT 1"
+        );
+        ResultSet rs3 = ps3.executeQuery();
+        rs3.next();
+        String userId = rs3.getString("id");
+
+
+    	session.setAttribute("user", userId);
     	session.setAttribute("username", user);
     	//session.setAttribute("salt", salt);			// not sure if we need this
     	response.sendRedirect("main");
