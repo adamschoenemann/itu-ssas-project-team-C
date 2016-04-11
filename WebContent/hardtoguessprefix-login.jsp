@@ -4,9 +4,6 @@
     import = "dk.itu.ssas.project.DB"
 %>
 
-<%-- TODO: session state validation --%>
-<%-- TODO: set CSRF token in session --%>
-
 <%@ page import="java.security.MessageDigest" %>
 <%@ page import="java.security.NoSuchAlgorithmException" %>
 <%@ page import="java.util.Scanner" %>
@@ -16,7 +13,14 @@
     // only allow POST method
     if (request.getMethod() != "POST") {
         response.sendRedirect("main");
+        return;
     }
+
+    if (request.getSession().getAttribute("user") != null) {
+        response.sendRedirect("main");
+        return;
+    }
+
     String user = request.getParameter("username");
     String pwd = request.getParameter("password");
 
